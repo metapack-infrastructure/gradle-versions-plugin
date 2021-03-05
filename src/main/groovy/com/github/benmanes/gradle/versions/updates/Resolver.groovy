@@ -112,7 +112,7 @@ class Resolver {
   private Configuration createLatestConfiguration(Configuration configuration, String revision,
       Map<Coordinate.Key, Coordinate> currentCoordinates) {
     List<Dependency> latest = configuration.dependencies.findAll { dependency ->
-      dependency instanceof ExternalDependency
+      dependency instanceof ExternalDependency && dependency.group == "com.metapack.deliverymanager"
     }.collect { dependency ->
       createQueryDependency(dependency, revision)
     }
