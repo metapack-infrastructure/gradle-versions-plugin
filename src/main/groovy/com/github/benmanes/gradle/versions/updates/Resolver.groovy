@@ -258,8 +258,10 @@ class Resolver {
   @TypeChecked(SKIP)
   private Map<Coordinate.Key, Coordinate> getCurrentCoordinates(Configuration configuration) {
     Map<Coordinate.Key, Coordinate> declared =
-      getResolvableDependencies(configuration).collectEntries {
-        return [it.key, it]
+      getResolvableDependencies(configuration)
+        .findAll { it.groupId.startsWith("com.metapack.deliverymanager") }
+        .collectEntries {
+          return [it.key, it]
       }
 
     if (declared.isEmpty()) {
