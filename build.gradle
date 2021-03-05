@@ -53,7 +53,7 @@ repositories {
 }
 
 group = 'com.github.ben-manes'
-version = 'MP-0.38.0'
+version = 'DM-0.38.0'
 
 sourceCompatibility = '1.8'
 
