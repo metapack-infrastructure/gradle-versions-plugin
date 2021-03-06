@@ -108,11 +108,15 @@ class Resolver {
     return result
   }
 
+  private boolean isDMPackage(String packageName) {
+    return packageName != null && packageName.startsWith("com.metapack.deliverymanager")
+  }
+
   /** Returns a copy of the configuration where dependencies will be resolved up to the revision. */
   private Configuration createLatestConfiguration(Configuration configuration, String revision,
       Map<Coordinate.Key, Coordinate> currentCoordinates) {
     List<Dependency> latest = configuration.dependencies.findAll { dependency ->
-      dependency instanceof ExternalDependency && dependency.group == "com.metapack"
+      dependency instanceof ExternalDependency && isDMPackage(dependency.group)
     }.collect { dependency ->
       createQueryDependency(dependency, revision)
     }
@@ -259,7 +263,7 @@ class Resolver {
   private Map<Coordinate.Key, Coordinate> getCurrentCoordinates(Configuration configuration) {
     Map<Coordinate.Key, Coordinate> declared =
       getResolvableDependencies(configuration)
-        .findAll { it.groupId.startsWith("com.metapack") }
+        .findAll { isDMPackage(it.groupId) }
         .collectEntries {
           return [it.key, it]
       }

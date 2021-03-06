@@ -24,6 +24,7 @@ bintray {
   //mind the order, as both generates poms, jar's one must be the last to override war's one.
 
   publish = true
+  override = true
 
   pkg {
     repo = "mp-maven"
