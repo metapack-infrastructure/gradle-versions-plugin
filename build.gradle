@@ -1,3 +1,12 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+  }
+}
+
 plugins {
   id 'com.gradle.plugin-publish' version '0.13.0'
   id 'java-gradle-plugin'
@@ -6,12 +15,46 @@ plugins {
   id 'groovy'
 }
 
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+  user = repositoryUser
+  key = repositoryPass
+  publications = ['jarPomAndSources']
+  //mind the order, as both generates poms, jar's one must be the last to override war's one.
+
+  publish = true
+  override = true
+
+  pkg {
+    repo = "mp-maven"
+    userOrg = "metapack"
+    name = archivesBaseName
+    desc = project.description
+    labels = ["metapack"]
+  }
+}
+
+afterEvaluate {
+  project.publishing {
+    publications {
+      jarPomAndSources(MavenPublication) {
+        from components.java
+        artifact project.sourcesJar {
+          classifier "sources"
+        }
+        artifactId archivesBaseName
+      }
+    }
+  }
+}
+
 repositories {
   mavenCentral()
 }
 
 group = 'com.github.ben-manes'
-version = '0.38.0'
+version = 'DM-0.38.0'
 
 sourceCompatibility = '1.8'
 
